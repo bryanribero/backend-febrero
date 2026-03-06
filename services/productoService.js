@@ -25,3 +25,20 @@ export async function createProduct({
     }
   }
 }
+
+export async function getAllProduct() {
+  try {
+    const product = await Producto.findAll()
+
+    return product.map((p) => p.toJSON())
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      throw new Error(
+        `Datos inválidos: ${err.errors.map((e) => e.message).join(', ')}`,
+        { cause: err }
+      )
+    } else {
+      throw err
+    }
+  }
+}
