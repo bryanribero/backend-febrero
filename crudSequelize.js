@@ -1,4 +1,8 @@
-import { createProduct, getAllProduct } from './services/productoService.js'
+import {
+  createProduct,
+  getAllProduct,
+  getProductWhere,
+} from './services/productoService.js'
 import http from 'http'
 
 const server = http.createServer(async (req, res) => {
@@ -31,6 +35,18 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       res.writeHead(500, { 'content-type': 'plain/text' })
       res.end(`Error de parte del servidor: ${err}`)
+    }
+  }
+
+  if (req.method === 'GET' && req.url === '/productos/where') {
+    try {
+      const data = await getProductWhere()
+
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify(data))
+    } catch (err) {
+      res.writeHead(500, { 'content-type': 'text/plain' })
+      res.end(`Error en el servidor: ${err}`)
     }
   }
 })

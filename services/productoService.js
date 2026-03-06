@@ -42,3 +42,24 @@ export async function getAllProduct() {
     }
   }
 }
+
+export async function getProductWhere() {
+  try {
+    const products = await Producto.findAll({
+      where: {
+        id_producto: 1,
+      },
+    })
+
+    return products?.map((p) => p.toJSON())
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      throw new Error(
+        `Datos inválidos: ${err.errors.map((e) => e.message).join('; ')}`,
+        { cause: err }
+      )
+    } else {
+      throw err
+    }
+  }
+}
