@@ -4,15 +4,18 @@ import Usuario from '../models/Usuario.js'
 export async function getPedidoInner() {
   try {
     const query = await Pedido.findAll({
+      attributes: ['id_pedido', 'descripcion'],
       where: {
         id_usuario: 2,
       },
       include: {
         model: Usuario,
+        attributes: ['nombre'],
       },
+      nest: true,
     })
 
-    return query.map((p) => p.toJSON())
+    return query
   } catch (err) {
     console.log(`Error en la consulta a la base de datos: ${err}`)
   }
