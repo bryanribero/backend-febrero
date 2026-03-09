@@ -1,4 +1,4 @@
-import Producto from '../models/producto.js'
+import Producto from '../models/Producto.js'
 import { ValidationError } from 'sequelize'
 
 export async function createProduct({

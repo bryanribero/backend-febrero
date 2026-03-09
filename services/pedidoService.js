@@ -20,3 +20,24 @@ export async function getPedidoInner() {
     console.log(`Error en la consulta a la base de datos: ${err}`)
   }
 }
+
+export async function updatePedido() {
+  const query = await Pedido.update(
+    {
+      descripcion: 'Cambie la descripcion xd',
+    },
+    {
+      where: {
+        id_pedido: 30,
+      },
+    }
+  )
+
+  return query[0]
+}
+
+export async function getPedidoByPK(id) {
+  const query = await Pedido.findByPk(id, { nest: true })
+
+  return query
+}

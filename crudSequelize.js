@@ -1,5 +1,10 @@
+import Pedido from './models/Pedido.js'
 import { getUser } from './services/loginService.js'
-import { getPedidoInner } from './services/pedidoService.js'
+import {
+  getPedidoByPK,
+  getPedidoInner,
+  updatePedido,
+} from './services/pedidoService.js'
 import {
   createProduct,
   getAllProduct,
@@ -108,6 +113,26 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       res.writeHead(401, { 'content-type': 'text/plain' })
       res.end(`Error: ${err}`)
+    }
+  }
+
+  if (req.method === 'PATCH' && req.url === '/pedidos') {
+    try {
+      const updateData = await updatePedido()
+
+      if (updateData > 0) {
+        const response = await getPedidoByPK(30)
+
+        res.writeHead(200, {
+          'content-type': 'application/json',
+        })
+        res.end(JSON.stringify(response))
+      } else {
+        throw new Error(`No se encontro el pedido con el id`)
+      }
+    } catch (err) {
+      res.writeHead(401, { 'content-type': 'text/plain' })
+      res.end(`Error: ${err.message}`)
     }
   }
 })
