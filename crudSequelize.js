@@ -12,6 +12,7 @@ import {
 } from './services/productoService.js'
 import http from 'http'
 import { deleteUser } from './services/usuarioService.js'
+import { transactionUsuarioPedido } from './services/transactionService.js'
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -154,6 +155,18 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       res.writeHead(401, { 'content-type': 'text/plain' })
       res.end(`${err}`)
+    }
+  }
+
+  if (req.method === 'POST' && req.url === '/transaction') {
+    try {
+      const data = await transactionUsuarioPedido()
+
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify(data))
+    } catch (err) {
+      res.writeHead(500, { 'content-type': 'text/plain' })
+      res.end(err.message)
     }
   }
 })
