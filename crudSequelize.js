@@ -11,6 +11,7 @@ import {
   getProductWhere,
 } from './services/productoService.js'
 import http from 'http'
+import { deleteUser } from './services/usuarioService.js'
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -133,6 +134,26 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       res.writeHead(401, { 'content-type': 'text/plain' })
       res.end(`Error: ${err.message}`)
+    }
+  }
+
+  if (req.method === 'DELETE' && req.url === '/usuarios') {
+    try {
+      const data = await deleteUser(4)
+
+      if (data > 0) {
+        res.writeHead(200, { 'content-type': 'application/json' })
+        res.end(
+          JSON.stringify({
+            result: `Registros eliminados: ${data}`,
+          })
+        )
+      } else {
+        throw new Error(`Registro no encontrado`)
+      }
+    } catch (err) {
+      res.writeHead(401, { 'content-type': 'text/plain' })
+      res.end(`${err}`)
     }
   }
 })
